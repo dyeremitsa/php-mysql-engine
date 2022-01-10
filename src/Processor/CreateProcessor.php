@@ -5,6 +5,7 @@ use MysqlEngine\DataType;
 use MysqlEngine\Query;
 use MysqlEngine\Schema\TableDefinition;
 use MysqlEngine\Schema\Column;
+use function array_map;
 
 final class CreateProcessor
 {
@@ -81,8 +82,8 @@ final class CreateProcessor
         }
 
         foreach ($stmt->indexes as $index) {
-            $columns = \array_map(
-                function ($col) {
+            $columns = array_map(
+                static function ($col) {
                     return $col['name'];
                 },
                 $index->cols
@@ -248,6 +249,7 @@ final class CreateProcessor
         $display_width = (int) $stmt->length;
 
         switch (strtoupper($stmt->type)) {
+            case DataType::BIT:
             case DataType::TINYINT:
                 return new Column\TinyInt($unsigned, $display_width);
 
@@ -257,9 +259,6 @@ final class CreateProcessor
             case DataType::INT:
             case DataType::INTEGER:
                 return new Column\IntColumn($unsigned, $display_width);
-
-            case DataType::BIT:
-                return new Column\TinyInt($unsigned, $display_width);
 
             case DataType::MEDIUMINT:
                 return new Column\MediumInt($unsigned, $display_width);

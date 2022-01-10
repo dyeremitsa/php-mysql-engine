@@ -64,6 +64,9 @@ trait FakePdoTrait
             && \strpos($options[\PDO::MYSQL_ATTR_INIT_COMMAND], 'STRICT_ALL_TABLES');
 
         $this->server = Server::getOrCreate('primary');
+
+        $queries = file_get_contents('./src/InformationSchema/tables.sql');
+        $this->prepare($queries)->execute();
     }
 
     /**

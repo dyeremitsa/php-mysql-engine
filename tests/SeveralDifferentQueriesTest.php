@@ -25,15 +25,16 @@ class SeveralDifferentQueriesTest extends \PHPUnit\Framework\TestCase
         $pdo->prepare($queries)->execute();
 
         $query = $pdo->query('SELECT * FROM `enemies`');
-        $result = (array)$query->fetchAll(\PDO::FETCH_OBJ);
-        $result = $this->toArray($result);
+        $result = $query->fetchAll(\PDO::FETCH_OBJ);
+
 
         $expected = [
             ['id' => 1, 'character_id' => 1, 'enemy_id' => 5],
             ['id' => 2, 'character_id' => 2, 'enemy_id' => 5],
             ['id' => 3, 'character_id' => 3, 'enemy_id' => 6],
-            ['id' => 4, 'character_id' => 1, 'enemy_id' => 11],
+            ['id' => 4, 'character_id' => 1, 'enemy_id' => 11]
         ];
+
         $this->assertSame($expected, $result);
     }
 

@@ -139,7 +139,7 @@ trait FakePdoStatementTrait
         }
         $unique = array_flip(array_flip($res));
 
-        return count($unique) !== 1 ? false : (bool)$unique[0];
+        return count($unique) !== 1 ? false : (bool)reset($unique);
     }
 
     /**
@@ -559,7 +559,7 @@ trait FakePdoStatementTrait
         }
         if ($fetchMode === PDO::FETCH_OBJ) {
             $this->affectedRows++;
-            return [(object)$this->result];
+            return (array)(object)$this->result;
         }
 
         throw new Exception('Fetch style not implemented');
